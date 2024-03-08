@@ -102,6 +102,18 @@ def get_rot_z_0(theta : Union[float, DHParameters]) -> npt.NDArray:
     return(rot_z_0)
 
 
+def get_trans_x_1(r : Union[float, DHParameters]) -> npt.NDArray:
+    if type(r) == float:
+        r = r
+    elif type(r) == DHParameters:
+        r = r.r
+    else:
+        raise ValueError(f"{type(r)} is not a valid parameter for r")
+        
+    trans_z_1 = np.eye(4)
+    trans_z_1[0,3] = r
+
+    return(trans_z_1)
 
 learm_dh_parameters = []
 dh_0_d = 0.06985
@@ -117,3 +129,4 @@ learm_dh_parameters.append(DHParameters(d=dh_0_d,
 print(learm_dh_parameters)
 print(get_trans_z_0(learm_dh_parameters[0]))
 print(get_rot_z_0(learm_dh_parameters[0]))
+print(get_trans_x_1(learm_dh_parameters[0]))
