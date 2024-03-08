@@ -49,6 +49,9 @@ in the same direction as the world_frame when at the home joint configuration.
 '''
 
 from dataclasses import dataclass
+import numpy as np
+import numpy.typing as npt
+from typing import Union
 @dataclass
 class DHParameters:
     """
@@ -57,13 +60,29 @@ class DHParameters:
     all angles are in radians, distances in meters
     """
     # d: offset along previous z to the common normal
-    d : float
+    d : float = 0
     # angle about previous z from old x to new x
-    theta : float
+    theta : float = 0
     #  length of the common normal. Assuming a revolute joint, this is the radius about previous z.
-    r : float
+    r : float = 0
     # angle about common normal, from old z axis to new z axis
-    alpha : float
+    alpha : float = 0
+
+def get_trans_z_0(d : Union[float, DHParameters]) -> npt.NDArray:
+    if type(d) == float:
+        d = d
+    elif type(d) == DHParameters:
+        d = d.d
+    else:
+        raise ValueError(f"{type(d)} is not a valid parameter for d")
+        
+    trans_z_0 = np.eye(4)
+    trans_z_0[2,3] = d
+
+    return(trans_z_0)
+
+
+
 
 learm_dh_parameters = []
 dh_0_d = 0.06985
@@ -77,3 +96,4 @@ learm_dh_parameters.append(DHParameters(d=dh_0_d,
                                         alpha=dh_alpha_0))
 
 print(learm_dh_parameters)
+print(get_trans_z_0(learm_dh_parameters[0]))
