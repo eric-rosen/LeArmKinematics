@@ -134,6 +134,15 @@ def get_rot_x_1(theta : Union[float, DHParameters]) -> npt.NDArray:
 
     return(rot_x_1)
 
+def get_a_t_b(dh_parameter : DHParameters):
+    trans_z = get_trans_z_0(dh_parameter)
+    rot_z = get_rot_z_0(dh_parameter)
+    trans_x = get_trans_x_1(dh_parameter)
+    rot_x = get_rot_x_1(dh_parameter)
+
+    return trans_z.dot(rot_z).dot(trans_x).dot(rot_x)
+
+
 learm_dh_parameters = []
 dh_0_d = 0.06985
 dh_theta_0 = 0 # TODO: user input
@@ -150,3 +159,4 @@ print(get_trans_z_0(learm_dh_parameters[0]))
 print(get_rot_z_0(learm_dh_parameters[0]))
 print(get_trans_x_1(learm_dh_parameters[0]))
 print(get_rot_x_1(learm_dh_parameters[0]))
+print(get_a_t_b(learm_dh_parameters[0]))
