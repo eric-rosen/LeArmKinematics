@@ -115,6 +115,25 @@ def get_trans_x_1(r : Union[float, DHParameters]) -> npt.NDArray:
 
     return(trans_z_1)
 
+def get_rot_x_1(theta : Union[float, DHParameters]) -> npt.NDArray:
+    """
+    assumes theta is in radians
+    """
+    if type(theta) == float:
+        theta = theta
+    elif type(theta) == DHParameters:
+        theta = theta.theta
+    else:
+        raise ValueError(f"{type(theta)} is not a valid parameter for theta")
+        
+    rot_x_1 = np.eye(4)
+    rot_x_1[1,1] = math.cos(theta)
+    rot_x_1[2,2] = math.cos(theta)
+    rot_x_1[1,2] = -math.sin(theta)
+    rot_x_1[2,1] = math.sin(theta)
+
+    return(rot_x_1)
+
 learm_dh_parameters = []
 dh_0_d = 0.06985
 dh_theta_0 = 0 # TODO: user input
@@ -130,3 +149,4 @@ print(learm_dh_parameters)
 print(get_trans_z_0(learm_dh_parameters[0]))
 print(get_rot_z_0(learm_dh_parameters[0]))
 print(get_trans_x_1(learm_dh_parameters[0]))
+print(get_rot_x_1(learm_dh_parameters[0]))
