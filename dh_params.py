@@ -51,6 +51,7 @@ in the same direction as the world_frame when at the home joint configuration.
 from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
+import math
 from typing import Union
 @dataclass
 class DHParameters:
@@ -81,6 +82,24 @@ def get_trans_z_0(d : Union[float, DHParameters]) -> npt.NDArray:
 
     return(trans_z_0)
 
+def get_rot_z_0(theta : Union[float, DHParameters]) -> npt.NDArray:
+    """
+    assumes theta is in radians
+    """
+    if type(theta) == float:
+        theta = theta
+    elif type(theta) == DHParameters:
+        theta = theta.theta
+    else:
+        raise ValueError(f"{type(theta)} is not a valid parameter for theta")
+        
+    rot_z_0 = np.eye(4)
+    rot_z_0[0,0] = math.cos(theta)
+    rot_z_0[1,1] = math.cos(theta)
+    rot_z_0[0,1] = -math.sin(theta)
+    rot_z_0[1,0] = math.sin(theta)
+
+    return(rot_z_0)
 
 
 
@@ -97,3 +116,4 @@ learm_dh_parameters.append(DHParameters(d=dh_0_d,
 
 print(learm_dh_parameters)
 print(get_trans_z_0(learm_dh_parameters[0]))
+print(get_rot_z_0(learm_dh_parameters[0]))
