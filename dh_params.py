@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 import math
 from typing import Union
-
+import matplotlib.pyplot as plt
 
 @dataclass
 class DHParameters:
@@ -12,14 +12,14 @@ class DHParameters:
 
     all angles are in radians, distances in meters
     """
-    # d: offset along previous z to the common normal
     d : float = 0
-    # angle about previous z from old x to new x
+    """d: offset along previous z to the common normal"""
     theta : float = 0
-    #  length of the common normal. Assuming a revolute joint, this is the radius about previous z.
+    """angle about previous z from old x to new x"""
     r : float = 0
-    # angle about common normal, from old z axis to new z axis
+    """length of the common normal. Assuming a revolute joint, this is the radius about previous z."""
     alpha : float = 0
+    """angle about common normal, from old z axis to new z axis"""
 
 def get_trans_z_0(d : Union[float, DHParameters]) -> npt.NDArray:
     if type(d) == float:
@@ -52,7 +52,6 @@ def get_rot_z_0(theta : Union[float, DHParameters]) -> npt.NDArray:
     rot_z_0[1,0] = math.sin(theta)
 
     return(rot_z_0)
-
 
 def get_trans_x_1(r : Union[float, DHParameters]) -> npt.NDArray:
     if type(r) == float:
@@ -94,38 +93,49 @@ def get_a_t_b(dh_parameter : DHParameters):
 
     return trans_z.dot(rot_z).dot(trans_x).dot(rot_x)
 
-learm_dh_parameters = []
-dh_0_d = 0.06985
-dh_0_theta = 0 # TODO: user input
-dh_0_r = 0
-dh_0_alpha = 0
+def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
+    """
+    We assume the list of dh_parameters describe a serial kinematic chain
+    """
+    _p_testp : npt.NDArray = np.asarray([0,0,0])
+    transforms = [get_a_t_b(dh_parameter) for dh_parameter in  dh_parameters]
 
-dh_1_d = 0.017462
-dh_1_theta = 0 # TODO: user input
-dh_1_r = -0.01111 # TODO: confirm this is okay to make negative and isn't a mistake?
-dh_1_alpha = np.pi/2.0
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
 
-dh_2_d = 0
-dh_2_theta = np.pi/2 # TODO: user input
-dh_2_r = 0.1063625
-dh_2_alpha = 0 
-
-
-learm_dh_parameters.append(DHParameters(d=dh_0_d,
-                                        theta=dh_0_theta,
-                                        r=dh_0_r,
-                                        alpha=dh_0_alpha))
+    # plot x
+    #ax.quiver(0, 0, 0, u, v, w, length=0.1, normalize=True)
 
 
-learm_dh_parameters.append(DHParameters(d=dh_1_d,
-                                        theta=dh_1_theta,
-                                        r=dh_1_r,
-                                        alpha=dh_1_alpha))
+    plt.show()
+    
+### Test script
 
-learm_dh_parameters.append(DHParameters(d=dh_2_d,
-                                        theta=dh_2_theta,
-                                        r=dh_2_r,
-                                        alpha=dh_2_alpha))
+dh_0 = DHParameters(
+    d = 0.06985,
+    theta = 0, # TODO: user input
+    r = 0,
+    alpha = 0,
+)
+
+dh_1 = DHParameters(
+    d = 0.017462,
+    theta = 0, # TODO: user input
+    r = -0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
+    alpha = np.pi/2.0
+)
+
+dh_2 = DHParameters(
+    d = 0,
+    theta = np.pi/2, # TODO: user input
+    r = 0.1063625,
+    alpha = 0
+)
+
+learm_dh_parameters = [dh_0, dh_1, dh_2]
 
 print(learm_dh_parameters)
 
@@ -139,3 +149,5 @@ print(f"link1_t_link2: {link1_t_link2}")
 print(f"link2_t_link3: {link2_t_link3}")
 print(world_t_link1.dot(link1_t_link2.dot(_p_testp)))
 print(world_t_link1.dot(link1_t_link2.dot(link2_t_link3.dot(_p_testp))))
+
+visualize_dh_parameters(learm_dh_parameters)
