@@ -92,7 +92,7 @@ def get_a_t_b(dh_parameter : DHParameters):
     trans_x = get_trans_x_1(dh_parameter)
     rot_x = get_rot_x_1(dh_parameter)
 
-    return trans_z.dot(rot_z).dot(trans_x).dot(rot_x)
+    return trans_z.dot(rot_z.dot(trans_x.dot(rot_x)))
 
 def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
     world_p_origin = world_t_frame[:3,3]
