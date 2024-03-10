@@ -34,7 +34,7 @@ all motors for the arm lie "above" the base.
 By convention, we will ground the axes of world_frame as:
 - having positive z oriented perpendicular to be facing upwards perpendicullary to the base
 - having posiive x oriented parallel to the base and pointing directly away from the back of the base
-- having y follows right hand rule  (in this case, pointing out "rightwards" in the frame of reference of the
+- having y follows right hand rule  (in this case, pointing out "leftwards" in the frame of reference of the
 world frame, parallel to the base).
 
 The origin of the world_frame will ground as:
@@ -53,7 +53,7 @@ theta_0 is related to the first motor, which has an axis of rotation that is par
 world_frame's z_axis. Under DH convention, this makes means that the z axis for frame attached to 
 link_1 goes in the same direction as the z_axis for the world_frame.
 
-Since the since z's are parallel, we can choose the common normal as long as in in the plane perpendiucular to the 
+Since the since z's are parallel, we can choose the common normal as long as it is in the plane perpendiucular to the 
 z axis of the world_frame/link_1, along with d (the displacement along the z axis from the 
 origin of the world_frame in this case.). Here, we choose d to be the height from the black plate base
 to the height blue plate base (i.e: the circular base link that the first motor controls), and make the x/y axis point
@@ -63,11 +63,11 @@ in the same direction as the world_frame when at the home joint configuration.
 
 The second servo has an axis of rotation that is parallel to the y axis of link_1's y_axis.
 Therefore, the z axis for the frame attached to link_2 is parallel to link_1's y_axis,
-with postive direction in the direction of the postive y of the world_frame.
+with postive direction in the direction of the positive y of the world_frame.
 
 the common normal for these two axes of rotations is parallel to the x axis of the world_frame,
-with the x axis positively pointing towards the the front of the base since the motor is a 
-little behind the center of the circular blue base.
+with the x axis positively pointing towards the the back of the base (negative x direction in world frame) since the motor is a 
+little behind the center of the circular blue base and the common normal points away.
 
 The y axis follows right hand rule, which in this case, makes positive y point in the same
 direction as positive z in the world_frame.
