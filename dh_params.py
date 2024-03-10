@@ -138,12 +138,14 @@ dh_0 = DHParameters(
     alpha = 0,
 )
 
+
 dh_1 = DHParameters(
-    d = 0.017462,
-    theta = 0, # TODO: user input
-    r = -0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
-    alpha = np.pi/2.0
+    d = 0.017462,#0.017462,
+    theta = np.pi, #0 TODO: user input
+    r = 0.01111,#-0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
+    alpha = np.pi/2.0,#np.pi/2.0
 )
+
 
 dh_2 = DHParameters(
     d = 0,
