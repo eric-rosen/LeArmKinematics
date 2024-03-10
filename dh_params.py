@@ -4,6 +4,7 @@ import numpy.typing as npt
 import math
 from typing import Union
 import matplotlib.pyplot as plt
+import itertools
 
 @dataclass
 class DHParameters:
@@ -93,22 +94,38 @@ def get_a_t_b(dh_parameter : DHParameters):
 
     return trans_z.dot(rot_z).dot(trans_x).dot(rot_x)
 
+def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
+    world_p_origin = world_t_frame[:3,3]
+    # plot x
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_t_frame[0,0], world_t_frame[1,0], world_t_frame[2,0], normalize=True, color="red")
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_t_frame[0,1], world_t_frame[1,1], world_t_frame[2,1], normalize=True, color="green")
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_t_frame[0,2], world_t_frame[1,2], world_t_frame[2,2], normalize=True, color="blue")
+
 def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
     """
     We assume the list of dh_parameters describe a serial kinematic chain
     """
-    _p_testp : npt.NDArray = np.asarray([0,0,0])
-    transforms = [get_a_t_b(dh_parameter) for dh_parameter in  dh_parameters]
-
     fig = plt.figure()
     ax = plt.axes(projection='3d')
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
 
-    # plot x
-    #ax.quiver(0, 0, 0, u, v, w, length=0.1, normalize=True)
+    ax.set_xlim((-0.5,1.5))
+    ax.set_ylim((-0.5,1.5))
+    ax.set_zlim((-0.5,1.5))
 
+    linki_t_linkj_list = [get_a_t_b(dh_parameter) for dh_parameter in  dh_parameters] # j = i+1
+    world_t_linki_list = [np.eye(4)]
+    draw_frame_axes(world_t_linki_list[0], ax)
+
+    for linki_t_linkj in linki_t_linkj_list:
+        world_t_linkj = world_t_linki_list[-1].dot(linki_t_linkj)
+        print(world_t_linkj)
+        draw_frame_axes(world_t_linkj, ax)
+        world_t_linki_list.append(world_t_linkj)
+
+    print(len(world_t_linki_list))
 
     plt.show()
     
@@ -144,10 +161,12 @@ _p_testp = np.array([0,0,0,1])
 world_t_link1 = get_a_t_b(learm_dh_parameters[0])
 link1_t_link2 = get_a_t_b(learm_dh_parameters[1])
 link2_t_link3 = get_a_t_b(learm_dh_parameters[2])
+"""
 print(f"world_t_link1: {world_t_link1}")
 print(f"link1_t_link2: {link1_t_link2}")
 print(f"link2_t_link3: {link2_t_link3}")
 print(world_t_link1.dot(link1_t_link2.dot(_p_testp)))
 print(world_t_link1.dot(link1_t_link2.dot(link2_t_link3.dot(_p_testp))))
+"""
 
-visualize_dh_parameters(learm_dh_parameters)
+visualize_dh_parameters(learm_dh_parameters[:2])
