@@ -116,9 +116,22 @@ dh_34 = DHParameters(
     r = 0.08,
     alpha = 0
 )
+dh_45 = DHParameters(
+    d = 0,
+    theta = 0, # TODO: user input
+    r = 0,
+    alpha = np.pi/2.0
+)
 
-learm_dh_parameters = [dh_01, dh_12,dh_23,dh_34]
+dh_56 = DHParameters(
+    d = 0.09,# TODO: user input
+    theta = 0, 
+    r = 0,
+    alpha = 0
+)
+
+learm_dh_parameters = [dh_01, dh_12,dh_23,dh_34,dh_45,dh_56]
 
 print(learm_dh_parameters)
 
-visualize_dh_parameters(learm_dh_parameters[:4])
+visualize_dh_parameters(learm_dh_parameters[:6])
