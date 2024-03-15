@@ -82,11 +82,13 @@ def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
     print(len(world_t_linki_list))
 
     plt.show()
+
+# TODO: redo actual measurements
     
 ### Test script
 dh_01 = DHParameters(
     d = 0.06985,
-    theta = np.pi + np.pi/4.0, # TODO: user input
+    theta = np.pi, # TODO: user input
     r = 0,
     alpha = 0,
 )
@@ -94,7 +96,7 @@ dh_01 = DHParameters(
 
 dh_12 = DHParameters(
     d = 0,#0.017462,
-    theta = np.pi/2.0 + np.pi/4.0, #0 TODO: user input
+    theta = np.pi/2.0, #0 TODO: user input
     r = 0.01111,#-0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
     alpha = np.pi/2.0,#np.pi/2.0
 )
