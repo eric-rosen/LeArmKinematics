@@ -86,7 +86,7 @@ def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
 ### Test script
 dh_01 = DHParameters(
     d = 0.06985,
-    theta = np.pi, # TODO: user input
+    theta = np.pi + np.pi/4.0, # TODO: user input
     r = 0,
     alpha = 0,
 )
@@ -94,21 +94,21 @@ dh_01 = DHParameters(
 
 dh_12 = DHParameters(
     d = 0,#0.017462,
-    theta = np.pi/2.0, #0 TODO: user input
+    theta = np.pi/2.0 + np.pi/4.0, #0 TODO: user input
     r = 0.01111,#-0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
     alpha = np.pi/2.0,#np.pi/2.0
 )
 
 
-dh_2 = DHParameters(
+dh_23 = DHParameters(
     d = 0,
-    theta = np.pi/2, # TODO: user input
-    r = 0.1063625,
+    theta = 0, # TODO: user input
+    r = 0.08,
     alpha = 0
 )
 
-learm_dh_parameters = [dh_01, dh_12]
+learm_dh_parameters = [dh_01, dh_12,dh_23]
 
 print(learm_dh_parameters)
 
-visualize_dh_parameters(learm_dh_parameters[:2])
+visualize_dh_parameters(learm_dh_parameters[:3])
