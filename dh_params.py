@@ -46,6 +46,16 @@ def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
     ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1],  color="green")
     ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2],  color="blue")
 
+
+def draw_link_axes(world_t_frame1 : npt.NDArray, world_t_frame2 : npt.NDArray, ax) -> None:
+    world_p_frame1 = world_t_frame1[1:,0]
+    world_p_frame2 = world_t_frame2[1:,0]
+    # quiver wants frame2 in frame1
+    frame1_p_frame2 = world_p_frame2 - world_p_frame1
+    # plot link
+    ax.quiver(world_p_frame1[0], world_p_frame1[1], world_p_frame1[2], frame1_p_frame2[0], frame1_p_frame2[1], frame1_p_frame2[2], color="black")
+
+
 def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
     """
     We assume the list of dh_parameters describe a serial kinematic chain
@@ -72,6 +82,8 @@ def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
         print(world_t_linkj)
         draw_frame_axes(world_t_linkj, ax)
         world_t_linki_list.append(world_t_linkj)
+        # draw two most recent links
+        draw_link_axes(world_t_linki_list[-2], world_t_linki_list[-1], ax)
 
     print(len(world_t_linki_list))
 
