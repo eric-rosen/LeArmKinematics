@@ -90,7 +90,7 @@ def init_matplotlib_fig():
     3d figure initialization for LeArm
     """
     fig = plt.figure()
-    ax = plt.axes(projection='3d')
+    ax = fig.add_subplot(projection='3d')
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
@@ -179,17 +179,32 @@ def add_sliders(fix, ax):
     # adjust the main plot to make room for the sliders
     fig.subplots_adjust(left=0.25, bottom=0.25)
 
-    # Make a horizontal slider to control joints
-    axfreq = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-    joint0_slider = Slider(
-        ax=axfreq,
-        label='joint 0',
-        valmin=-np.pi/2.0,
-        valmax=np.pi/2.0,
-        valinit=0,
-    )
+    joint_slider_list = []
+    # revolute joints
+    for jointi in range(5):
+        # Make a horizontal slider to control joints
+        axfreq = fig.add_axes([0.25, 0 + (0.05*jointi), 0.65, 0.03])
+        joint_slider_list.append(
+        Slider(
+            ax=axfreq,
+            label=f'joint {jointi}',
+            valmin=-np.pi/2.0,
+            valmax=np.pi/2.0,
+            valinit=0,
+        ))
+    # last joint is the gripper which we model as translating rather than rotationally
+    # it has different bounds than the others
+    axfreq = fig.add_axes([0.25, 0 + (0.05*5), 0.65, 0.03])
+    joint_slider_list.append(
+        Slider(
+            ax=axfreq,
+            label=f'joint 5',
+            valmin=0,
+            valmax=np.pi,
+            valinit=0,
+        ))
 
-    return joint0_slider
+    return joint_slider_list
 
 
 # The function to be called anytime a slider's value changes
@@ -208,6 +223,7 @@ world_t_linki_list : npt.NDArray = get_link0_t_linki(learm_dh_parameters)
 
 fig,ax = init_matplotlib_fig()
 viz_axes_list,viz_link_list = draw_dh_parameters(world_t_linki_list,ax)
-joint0_slider = add_sliders(fig,ax)
-joint0_slider.on_changed(update)
+joint_slider_list = add_sliders(fig,ax)
+for jointi, jointi_slider in enumerate(joint_slider_list):
+    jointi_slider.on_changed(update)
 plt.show()
