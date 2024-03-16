@@ -1,3 +1,7 @@
+"""
+I highly recommend checking out "A Note on Denavit-Hartenberg Notation in Robotics by Harvey Lipkin (2005)
+This codebase was based on how the proximal variant was described in it. I am highly greatful for it as a resource.
+"""
 from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
@@ -7,8 +11,7 @@ import matplotlib.pyplot as plt
 @dataclass
 class DHParameters:
     """
-    Proximal Variant
-    I recommend checking out "A Note on Denavit-Hartenberg Notation in Robotics by Harvey Lipkin (2005)
+    These Denavit–Hartenberg (DH) parameters follow the proximal variant
 
     all angles are in radians
     distances are standardly in meters
@@ -23,6 +26,10 @@ class DHParameters:
     """angle about common normal, from old z axis to new z axis"""
 
 def get_a_t_b(dh_parameter : DHParameters) -> npt.NDArray:
+    """
+    Gets the SE(3) that represents where frame b is in
+    frame a (conceptually, a is parent frame, b is child frame).
+    """
     mat_a = np.eye(4)
     mat_a[1,0] = dh_parameter.r
     mat_a[2,2] = math.cos(dh_parameter.alpha)
