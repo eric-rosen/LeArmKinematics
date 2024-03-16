@@ -100,8 +100,6 @@ def init_matplotlib_fig():
     ax.set_zlim((-0.05,.25))
     return (fig,ax)
 
-
-
 def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
     """
     We assume the list of dh_parameters describe a serial kinematic chain
@@ -180,40 +178,43 @@ def add_sliders(fix, ax):
     fig.subplots_adjust(left=0.25, bottom=0.25)
 
     joint_slider_list = []
-    # revolute joints
-    for jointi in range(5):
+    joint_slider_min_max_init = [
+        [-np.pi/2.0,np.pi/2.0,0],
+        [-np.pi/2.0,np.pi/2.0,0],
+        [-np.pi/2.0,np.pi/2.0,0],
+        [-np.pi/2.0,np.pi/2.0,0],
+        [-np.pi/2.0,np.pi/2.0,0],
+        [0,np.pi,0],
+    ]
+    # joints
+    for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
         # Make a horizontal slider to control joints
         axfreq = fig.add_axes([0.25, 0 + (0.05*jointi), 0.65, 0.03])
         joint_slider_list.append(
         Slider(
             ax=axfreq,
             label=f'joint {jointi}',
-            valmin=-np.pi/2.0,
-            valmax=np.pi/2.0,
-            valinit=0,
-        ))
-    # last joint is the gripper which we model as translating rather than rotationally
-    # it has different bounds than the others
-    axfreq = fig.add_axes([0.25, 0 + (0.05*5), 0.65, 0.03])
-    joint_slider_list.append(
-        Slider(
-            ax=axfreq,
-            label=f'joint 5',
-            valmin=0,
-            valmax=np.pi,
-            valinit=0,
+            valmin=jointi_min_max_init[0],
+            valmax=jointi_min_max_init[1],
+            valinit=jointi_min_max_init[2],
         ))
 
     return joint_slider_list
 
 
 # The function to be called anytime a slider's value changes
-def update(val):
+def update(val,updating_idx):
     global viz_axes_list,viz_link_list, learm_dh_parameters, world_t_linki_list
     artists = viz_axes_list + viz_link_list
     for artist in artists:
         artist.remove()
-    learm_dh_parameters = get_dh_parameters(q_offset_1=val)
+    # update existing learn_dh_parameters
+    # most joints are actuated via theta, only last is by d.
+    print(f"val: {val}, idx: {updating_idx}")
+    if updating_idx != 5:
+        learm_dh_parameters[updating_idx].theta = val
+    else:
+        learm_dh_parameters[updating_idx].d = val
     world_t_linki_list = get_link0_t_linki(learm_dh_parameters)
     viz_axes_list,viz_link_list = draw_dh_parameters(world_t_linki_list,ax)
     fig.canvas.draw_idle()
@@ -221,9 +222,19 @@ def update(val):
 learm_dh_parameters : list[DHParameters]= get_dh_parameters()
 world_t_linki_list : npt.NDArray = get_link0_t_linki(learm_dh_parameters)
 
-fig,ax = init_matplotlib_fig()
-viz_axes_list,viz_link_list = draw_dh_parameters(world_t_linki_list,ax)
-joint_slider_list = add_sliders(fig,ax)
-for jointi, jointi_slider in enumerate(joint_slider_list):
-    jointi_slider.on_changed(update)
+fig, ax = init_matplotlib_fig()
+viz_axes_list, viz_link_list = draw_dh_parameters(world_t_linki_list, ax)
+joint_slider_list = add_sliders(fig, ax)
+
+# Define a closure to capture the correct index for each slider
+def create_update_function(idx):
+    def update_function(x):
+        update(x, idx)
+    return update_function
+
+update_function_list = [create_update_function(idx) for idx in range(len(joint_slider_list))]
+
+for jointi_slider, update_function in zip(joint_slider_list, update_function_list):
+    jointi_slider.on_changed(update_function)
+
 plt.show()
