@@ -117,6 +117,8 @@ def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
 
     return(viz_axes_list,viz_link_list)
 
+LEARM_JOINT_OFFSETS : List[float] = [np.pi,np.pi/2.0, 0,  np.pi/2.0, 0, 0.09]
+
 # TODO: redo actual measurements
 def get_dh_parameters(q_offset_1 : float = 0 ,
                       q_offset_2 : float = 0 ,
@@ -128,7 +130,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
     ### Test script
     dh_01 = DHParameters(
         d = 0.06985,
-        theta = np.pi - q_offset_1, # TODO: user input
+        theta = LEARM_JOINT_OFFSETS[0] - q_offset_1, # TODO: user input
         r = 0,
         alpha = 0,
     )
@@ -136,7 +138,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_12 = DHParameters(
         d = 0,
-        theta = np.pi/2.0 + q_offset_2, #0 TODO: user input
+        theta = LEARM_JOINT_OFFSETS[1] + q_offset_2, #0 TODO: user input
         r = 0.01111,
         alpha = np.pi/2.0,
     )
@@ -144,7 +146,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_23 = DHParameters(
         d = 0,
-        theta = 0 + q_offset_3, # TODO: user input
+        theta = LEARM_JOINT_OFFSETS[2] + q_offset_3, # TODO: user input
         r = 0.08,
         alpha = 0
     )
@@ -152,19 +154,19 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_34 = DHParameters(
         d = 0,
-        theta = np.pi/2.0 + q_offset_4, # TODO: user input
+        theta = LEARM_JOINT_OFFSETS[3] + q_offset_4, # TODO: user input
         r = 0.08,
         alpha = 0
     )
     dh_45 = DHParameters(
         d = 0,
-        theta = 0 + q_offset_5, # TODO: user input
+        theta = LEARM_JOINT_OFFSETS[4] + q_offset_5, # TODO: user input
         r = 0,
         alpha = np.pi/2.0
     )
 
     dh_56 = DHParameters(
-        d = 0.09 + q_offset_6,# TODO: user input
+        d = LEARM_JOINT_OFFSETS[5] + q_offset_6,# TODO: user input
         theta = 0, 
         r = 0,
         alpha = 0
@@ -179,12 +181,12 @@ def add_sliders(fix, ax):
 
     joint_slider_list = []
     joint_slider_min_max_init = [
-        [-np.pi/2.0,np.pi/2.0,0],
-        [-np.pi/2.0,np.pi/2.0,0],
-        [-np.pi/2.0,np.pi/2.0,0],
-        [-np.pi/2.0,np.pi/2.0,0],
-        [-np.pi/2.0,np.pi/2.0,0],
-        [0,np.pi,0],
+        [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0,LEARM_JOINT_OFFSETS[0]],
+        [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0,LEARM_JOINT_OFFSETS[1]],
+        [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,LEARM_JOINT_OFFSETS[2]],
+        [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,LEARM_JOINT_OFFSETS[3]],
+        [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,LEARM_JOINT_OFFSETS[4]],
+        [LEARM_JOINT_OFFSETS[5]-np.pi/2.0,LEARM_JOINT_OFFSETS[5]+np.pi/2.0,LEARM_JOINT_OFFSETS[5]],
     ]
     # joints
     for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
