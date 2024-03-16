@@ -95,10 +95,10 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
 
     dh_12 = DHParameters(
-        d = 0,#0.017462,
+        d = 0,
         theta = np.pi/2.0 + q_offset_2, #0 TODO: user input
-        r = 0.01111,#-0.01111, # TODO: confirm this is okay to make negative and isn't a mistake?
-        alpha = np.pi/2.0,#np.pi/2.0
+        r = 0.01111,
+        alpha = np.pi/2.0,
     )
 
 
@@ -133,5 +133,5 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
     learm_dh_parameters = [dh_01, dh_12,dh_23,dh_34,dh_45,dh_56]
     return(learm_dh_parameters)
 
-learm_dh_parameters = get_dh_parameters(q_offset_3=np.pi/3.0)
+learm_dh_parameters = get_dh_parameters()
 visualize_dh_parameters(learm_dh_parameters[:6])
