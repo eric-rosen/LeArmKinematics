@@ -8,6 +8,7 @@ import numpy.typing as npt
 import math
 import matplotlib.pyplot as plt
 from typing import List
+from matplotlib.widgets import Slider
 
 @dataclass
 class DHParameters:
@@ -50,10 +51,10 @@ def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
     world_p_origin = world_t_frame[1:,0]
     world_r_origin = world_t_frame[1:,1:] / 30.0
     # plot axes
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,0], world_r_origin[1,0], world_r_origin[2,0], color="red")
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1],  color="green")
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2],  color="blue")
-
+    ax1 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,0], world_r_origin[1,0], world_r_origin[2,0], color="red")
+    ax2 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1],  color="green")
+    ax3 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2],  color="blue")
+    return([ax1,ax2,ax3])
 
 def draw_link_axes(world_t_frame1 : npt.NDArray, world_t_frame2 : npt.NDArray, ax) -> None:
     world_p_frame1 = world_t_frame1[1:,0]
@@ -61,8 +62,8 @@ def draw_link_axes(world_t_frame1 : npt.NDArray, world_t_frame2 : npt.NDArray, a
     # quiver wants frame2 in frame1
     frame1_p_frame2 = world_p_frame2 - world_p_frame1
     # plot link
-    ax.quiver(world_p_frame1[0], world_p_frame1[1], world_p_frame1[2], frame1_p_frame2[0], frame1_p_frame2[1], frame1_p_frame2[2], color="black")
-
+    link_quiver = ax.quiver(world_p_frame1[0], world_p_frame1[1], world_p_frame1[2], frame1_p_frame2[0], frame1_p_frame2[1], frame1_p_frame2[2], color="black")
+    return(link_quiver)
 def get_link0_t_linki(dh_parameters : list[DHParameters]) -> List[npt.NDArray]:
     """
     Given a list of DH parameters that start from 0 and go incrementally upward,
@@ -97,27 +98,26 @@ def init_matplotlib_fig():
     ax.set_xlim((-0.15,.15))
     ax.set_ylim((-0.15,.15))
     ax.set_zlim((-0.05,.25))
-
     return (fig,ax)
 
 
 
-def visualize_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
+def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
     """
     We assume the list of dh_parameters describe a serial kinematic chain
     """
     # Draw the frames
+    viz_axes_list = []
     for link0_t_linkj in world_t_linki_list:
-        draw_frame_axes(link0_t_linkj, ax)
+        viz_axes_list += draw_frame_axes(link0_t_linkj, ax)
     
     # Draw the links
+    viz_link_list = []
     for linkj in range(len(world_t_linki_list)-1):
         # draw two most recent links
-        draw_link_axes(world_t_linki_list[linkj], world_t_linki_list[linkj+1], ax)
+        viz_link_list.append(draw_link_axes(world_t_linki_list[linkj], world_t_linki_list[linkj+1], ax))
 
-    print(len(world_t_linki_list))
-
-    plt.show()
+    return(viz_axes_list,viz_link_list)
 
 # TODO: redo actual measurements
 def get_dh_parameters(q_offset_1 : float = 0 ,
@@ -130,7 +130,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
     ### Test script
     dh_01 = DHParameters(
         d = 0.06985,
-        theta = np.pi + q_offset_1, # TODO: user input
+        theta = np.pi - q_offset_1, # TODO: user input
         r = 0,
         alpha = 0,
     )
@@ -175,7 +175,39 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
     learm_dh_parameters = [dh_01, dh_12,dh_23,dh_34,dh_45,dh_56]
     return(learm_dh_parameters)
 
-fig,ax = init_matplotlib_fig()
-learm_dh_parameters : list[DHParameters]= get_dh_parameters(q_offset_3=np.pi/4.0)
+def add_sliders(fix, ax):
+    # adjust the main plot to make room for the sliders
+    fig.subplots_adjust(left=0.25, bottom=0.25)
+
+    # Make a horizontal slider to control joints
+    axfreq = fig.add_axes([0.25, 0.1, 0.65, 0.03])
+    joint0_slider = Slider(
+        ax=axfreq,
+        label='joint 0',
+        valmin=-np.pi/2.0,
+        valmax=np.pi/2.0,
+        valinit=0,
+    )
+
+    return joint0_slider
+
+
+# The function to be called anytime a slider's value changes
+def update(val):
+    global viz_axes_list,viz_link_list, learm_dh_parameters, world_t_linki_list
+    artists = viz_axes_list + viz_link_list
+    for artist in artists:
+        artist.remove()
+    learm_dh_parameters = get_dh_parameters(q_offset_1=val)
+    world_t_linki_list = get_link0_t_linki(learm_dh_parameters)
+    viz_axes_list,viz_link_list = draw_dh_parameters(world_t_linki_list,ax)
+    fig.canvas.draw_idle()
+
+learm_dh_parameters : list[DHParameters]= get_dh_parameters()
 world_t_linki_list : npt.NDArray = get_link0_t_linki(learm_dh_parameters)
-visualize_dh_parameters(world_t_linki_list,ax)
+
+fig,ax = init_matplotlib_fig()
+viz_axes_list,viz_link_list = draw_dh_parameters(world_t_linki_list,ax)
+joint0_slider = add_sliders(fig,ax)
+joint0_slider.on_changed(update)
+plt.show()
