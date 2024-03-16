@@ -40,11 +40,11 @@ def get_a_t_b(dh_parameter : DHParameters) -> npt.NDArray:
 
 def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
     world_p_origin = world_t_frame[1:,0]
-    world_r_origin = world_t_frame[1:,1:]
+    world_r_origin = world_t_frame[1:,1:] / 30.0
     # plot axes
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,0], world_r_origin[1,0], world_r_origin[2,0], normalize=True, color="red")
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1], normalize=True, color="green")
-    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2], normalize=True, color="blue")
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,0], world_r_origin[1,0], world_r_origin[2,0], color="red")
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1],  color="green")
+    ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2],  color="blue")
 
 def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
     """
@@ -56,9 +56,9 @@ def visualize_dh_parameters(dh_parameters : list[DHParameters]) -> None:
     ax.set_ylabel('y')
     ax.set_zlabel('z')
 
-    ax.set_xlim((-0.5,1.5))
-    ax.set_ylim((-0.5,1.5))
-    ax.set_zlim((-0.5,1.5))
+    ax.set_xlim((-0.15,.15))
+    ax.set_ylim((-0.15,.15))
+    ax.set_zlim((-0.05,.25))
 
     linki_t_linkj_list = [get_a_t_b(dh_parameter) for dh_parameter in  dh_parameters] # j = i+1
 
