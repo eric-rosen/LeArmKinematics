@@ -72,12 +72,12 @@ If we want, we can launch an interactive visualizer to see what the robot looks 
 sliders to see what it would look like in other ones:
 
 ```
-from learm.visulization import visualize_learm
+from learm.visulization import InteractiveVisualizer
 
 # launch interactive visualizer, by default it's in the HOME_CONFIGURATION
-visualize_learm()
+InteractiveVisualizer()
 # you can also launch it with a specific starting joint configuration, for example:
-visualize_learm(starting_configuration = FORWARD_GRAB_CONFIGURATION)
+InteractiveVisualizer(starting_configuration = FORWARD_GRAB_CONFIGURATION)
 ```
 
 # Support
