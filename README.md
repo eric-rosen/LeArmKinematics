@@ -3,8 +3,8 @@ Python library for calculating / visualizing forward kinematics on the LeArm 6-D
 
 You can find an amazon link to the arm [here](https://www.amazon.com/LewanSoul-Programmable-Feedback-Parameter-Programming/dp/B074T6DPKX)
 and you can find python code for controlling joint positions [here](https://github.com/ccourson/xArmServoController)
-
-![LeArm Visualization](./imgs/output.gif)
+<img src="./imgs/learm.jpeg" alt="LeArm Notes" style="width: 300px;">
+<img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
 
 # Getting Started
 [TODO]
