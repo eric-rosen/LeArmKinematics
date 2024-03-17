@@ -45,7 +45,6 @@ HOME_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
 ```
 This joint configuration represents the home configuration, which is when the robot is standing straight up with its gripper fully open. A funner position where the robot is bending over to grab something on the table might look like:
 
-[TODO] put something nice here
 ```python
 FORWARD_GRAB_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
                                             np.pi/2.0,  # joint/servo 2 (radians)
@@ -85,12 +84,12 @@ from learm.visualization import InteractiveVisualizer
 # launch interactive visualizer, by default it's in the HOME_CONFIGURATION
 InteractiveVisualizer()
 # you can also launch it with a specific starting joint configuration, for example:
-InteractiveVisualizer(starting_configuration = FORWARD_GRAB_CONFIGURATION)
+InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
 ```
 
 # Support
 If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io). This library is intended to be open-source and free for all to use for any purposes without permission needed.
 
 # TODO
-- make `InteractiveVisualizer` take in a configuration
+- put actual configuration for `FORWARD_GRAB_CONFIGURATION`
 - actually get correct measurements for the LeArm

@@ -62,18 +62,25 @@ def init_matplotlib_fig():
     ax.set_zlim((-0.05,.25))
     return (fig,ax)
 
-def add_sliders(fig, ax):
+def add_sliders(fig,
+                ax,
+                q_0 : float = LEARM_JOINT_OFFSETS[0],
+                q_1  : float = LEARM_JOINT_OFFSETS[1] ,
+                q_2  : float = LEARM_JOINT_OFFSETS[2] ,
+                q_3  : float = LEARM_JOINT_OFFSETS[3] ,
+                q_4  : float = LEARM_JOINT_OFFSETS[4] ,
+                q_5  : float = LEARM_JOINT_OFFSETS[5] ,):
     # adjust the main plot to make room for the sliders
     fig.subplots_adjust(left=0.25, bottom=0.25)
 
     joint_slider_list = []
     joint_slider_min_max_init = [
-        [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0,LEARM_JOINT_OFFSETS[0]],
-        [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0,LEARM_JOINT_OFFSETS[1]],
-        [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,LEARM_JOINT_OFFSETS[2]],
-        [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,LEARM_JOINT_OFFSETS[3]],
-        [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,LEARM_JOINT_OFFSETS[4]],
-        [LEARM_JOINT_OFFSETS[5]-np.pi/2.0,LEARM_JOINT_OFFSETS[5]+np.pi/2.0,LEARM_JOINT_OFFSETS[5]],
+        [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0,q_0],
+        [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0,q_1],
+        [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,q_2],
+        [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,q_3],
+        [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,q_4],
+        [LEARM_JOINT_OFFSETS[5]-np.pi/2.0,LEARM_JOINT_OFFSETS[5]+np.pi/2.0,q_5],
     ]
     # joints
     for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
@@ -92,16 +99,32 @@ def add_sliders(fig, ax):
 
 
 class InteractiveVisualizer():
-
-    def __init__(self):
+    def __init__(self,
+                 q_0 : float = LEARM_JOINT_OFFSETS[0],
+                 q_1  : float = LEARM_JOINT_OFFSETS[1] ,
+                 q_2  : float = LEARM_JOINT_OFFSETS[2] ,
+                 q_3  : float = LEARM_JOINT_OFFSETS[3] ,
+                 q_4  : float = LEARM_JOINT_OFFSETS[4] ,
+                 q_5  : float = LEARM_JOINT_OFFSETS[5] ):
         # starts in home configuration
-        self.learm_dh_parameters : list[DHParameters] = get_dh_parameters()
+        self.learm_dh_parameters : list[DHParameters] = get_dh_parameters(q_0=q_0,
+                                                                          q_1=q_1,
+                                                                          q_2=q_2,
+                                                                          q_3=q_3,
+                                                                          q_4=q_4,
+                                                                          q_5=q_5)
         world_t_linki_list : npt.NDArray = get_link0_t_linki(self.learm_dh_parameters)
 
         self.fig, self.ax = init_matplotlib_fig()
         self.viz_axes_list, self.viz_link_list = draw_dh_parameters(world_t_linki_list, self.ax)
 
-        joint_slider_list = add_sliders(self.fig, self.ax)
+        joint_slider_list = add_sliders(self.fig, 
+                                        self.ax,q_0=q_0,
+                                        q_1=q_1,
+                                        q_2=q_2,
+                                        q_3=q_3,
+                                        q_4=q_4,
+                                        q_5=q_5)
 
         update_function_list = [self.create_update_function(idx) for idx in range(len(joint_slider_list))]
 
