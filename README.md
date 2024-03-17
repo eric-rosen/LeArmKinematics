@@ -52,6 +52,8 @@ Given a 6D joint configuration (like `HOME_CONFIGURATION`), forward kinematics c
 For example, to calculate where each link of the arm is when it is in the home configuration, we can use the `get_link0_t_linki` function by passing it a configuration:
 
 ```
+from learm.kinematics import get_link0_t_linki
+
 link0_t_linki_list : list = get_link0_t_linki(HOME_CONFIGURATION)
 ```
 
@@ -68,6 +70,8 @@ If we want, we can launch an interactive visualizer to see what the robot looks 
 sliders to see what it would look like in other ones:
 
 ```
+from learm.visulization import visualize_learm
+
 # launch interactive visualizer
 visualize_learm()
 # you can also launch it with a specific starting joint configuration, for example:
