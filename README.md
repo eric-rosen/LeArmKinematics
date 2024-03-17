@@ -55,6 +55,7 @@ For example, to calculate where each link of the arm is when it is in the home c
 ```
 from learm.kinematics import get_link0_t_linki
 
+# Calculating forward kinematics to get the pose of each link in the HOME_CONFIGURATION
 link0_t_linki_list : list = get_link0_t_linki(HOME_CONFIGURATION)
 ```
 
