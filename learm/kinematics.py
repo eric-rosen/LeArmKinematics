@@ -78,7 +78,6 @@ def get_link0_t_linki(dh_parameters : Union[list[DHParameters],list[float]]) -> 
 
     return(world_t_linki_list)
 
-# TODO: redo actual measurements
 def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
                       q_1  : float = LEARM_JOINT_OFFSETS[1] ,
                       q_2  : float = LEARM_JOINT_OFFSETS[2] ,
@@ -91,7 +90,7 @@ def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
     """
     dh_01 = DHParameters(
         d = 0.03175,
-        theta = q_0, # TODO: user input
+        theta = q_0, # revolute joint
         r = 0,
         alpha = 0,
     )
@@ -99,7 +98,7 @@ def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
 
     dh_12 = DHParameters(
         d = 0,
-        theta = q_1, #0 TODO: user input
+        theta = q_1, # revolute joint
         r = 0.009525, # got this twice, nice!
         alpha = np.pi/2.0,
     )
@@ -107,7 +106,7 @@ def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
 
     dh_23 = DHParameters(
         d = 0,
-        theta = q_2, # TODO: user input
+        theta = q_2, # revolute joint
         r = 0.0762,
         alpha = 0
     )
@@ -115,19 +114,19 @@ def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
 
     dh_34 = DHParameters(
         d = 0,
-        theta = q_3, # TODO: user input
+        theta = q_3, # revolute joint
         r = 0.0889,
         alpha = 0
     )
     dh_45 = DHParameters(
         d = 0,
-        theta = q_4, # TODO: user input
+        theta = q_4, # revolute joint
         r = 0,
         alpha = np.pi/2.0
     )
 
     dh_56 = DHParameters(
-        d = q_5,# TODO: user input
+        d = q_5,# prismatic joint
         theta = 0, 
         r = 0,
         alpha = 0
