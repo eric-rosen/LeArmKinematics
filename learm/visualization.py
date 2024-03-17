@@ -1,10 +1,14 @@
 """
-Holds all utility functions relevant to visualizing LeArm
+Holds all utility functions relevant to visualizing LeArm.
+
+Most important is InteractiveVisualizer, which is a class
+that on construction generates an interactive
+3D matplotlib rendering of the LeArm.
 """
 import numpy.typing as npt
 import matplotlib.pyplot as plt
 import numpy as np
-from learm.kinematics import LEARM_JOINT_OFFSETS
+from learm.kinematics import get_dh_parameters, get_link0_t_linki, DHParameters, LEARM_JOINT_OFFSETS
 from matplotlib.widgets import Slider
 
 def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
@@ -85,3 +89,49 @@ def add_sliders(fig, ax):
         ))
 
     return joint_slider_list
+
+
+class InteractiveVisualizer():
+
+    def __init__(self):
+        self.learm_dh_parameters : list[DHParameters] = get_dh_parameters()
+        world_t_linki_list : npt.NDArray = get_link0_t_linki(self.learm_dh_parameters)
+
+        self.fig, self.ax = init_matplotlib_fig()
+        self.viz_axes_list, self.viz_link_list = draw_dh_parameters(world_t_linki_list, self.ax)
+
+        joint_slider_list = add_sliders(self.fig, self.ax)
+
+        update_function_list = [self.create_update_function(idx) for idx in range(len(joint_slider_list))]
+
+        for jointi_slider, update_function in zip(joint_slider_list, update_function_list):
+            jointi_slider.on_changed(update_function)
+
+        plt.show()
+
+    # Define a closure to capture the correct index for each slider
+    def create_update_function(self, idx):
+        def update_function(x):
+            self.update(x, idx)
+        return update_function
+
+    # The function to be called anytime a slider's value changes
+    def update(self, val,updating_idx):
+        artists = self.viz_axes_list + self.viz_link_list
+        for artist in artists:
+            artist.remove()
+        # update existing learn_dh_parameters
+        # most joints are actuated via theta, only last is by d.
+        print(f"val: {val}, idx: {updating_idx}")
+        if updating_idx != 5:
+            self.learm_dh_parameters[updating_idx].theta = val
+        else:
+            self.learm_dh_parameters[updating_idx].d = val
+
+        world_t_linki_list = get_link0_t_linki(self.learm_dh_parameters)
+        self.viz_axes_list, self.viz_link_list = draw_dh_parameters(world_t_linki_list,self.ax)
+        self.fig.canvas.draw_idle()
+
+
+if __name__ == "__main__":
+    InteractiveVisualizer()
