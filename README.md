@@ -47,11 +47,11 @@ This joint configuration represents the home configuration, which is when the ro
 
 ```python
 FORWARD_GRAB_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
-                                            np.pi/2.0,  # joint/servo 2 (radians)
-                                            0,          # joint/servo 3 (radians)
-                                            np.pi/2.0,  # joint/servo 4 (radians)
+                                            np.pi/2.0 + np.pi/8.0,  # joint/servo 2 (radians)
+                                            0 + np.pi/3.0,          # joint/servo 3 (radians)
+                                            np.pi/2.0 + np.pi/3.0,  # joint/servo 4 (radians)
                                             0,          # joint/servo 5 (radians)
-                                            0.09]       # joint/servo 6 (meters)
+                                            0.09 + 0.01]       # joint/servo 6 (meters)
 ```
 
 Given a 6D joint configuration (like `HOME_CONFIGURATION`), forward kinematics calculates where each link is posed (position/orientation) in 3D space. 
@@ -91,6 +91,5 @@ InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
 If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io).
 
 # TODO
-- put actual configuration for `FORWARD_GRAB_CONFIGURATION`
 - make the prints for interactive visualizer be the current joint config
 - make a new gif for the visualization
