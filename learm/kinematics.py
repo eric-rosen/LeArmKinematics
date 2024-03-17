@@ -10,9 +10,21 @@ import numpy.typing as npt
 import math
 from typing import Union
 
-# These are the values for the actuated joints that equate to the home configuration for the LeArm
-# These are meant to be constants and should not be touched
 LEARM_JOINT_OFFSETS : list[float] = [np.pi,np.pi/2.0, 0,np.pi/2.0,0,0.1524] # gripper confirmed twice!
+'''These are the values for the actuated joints that equate to the home configuration for the LeArm.
+These are meant to be constants and should not be touched'''
+
+LEARN_JOINT_MIN_MAX = [
+    [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0],
+    [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0],
+    [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0],
+    [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0],
+    [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0],
+    [LEARM_JOINT_OFFSETS[5],LEARM_JOINT_OFFSETS[5]+0.03175]
+]
+'''
+The min/max of the joint ranges for each joint.
+'''
 
 @dataclass
 class DHParameters:

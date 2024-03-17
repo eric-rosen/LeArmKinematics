@@ -8,7 +8,7 @@ that on construction generates an interactive
 import numpy.typing as npt
 import matplotlib.pyplot as plt
 import numpy as np
-from learm.kinematics import get_dh_parameters, get_link0_t_linki, DHParameters, LEARM_JOINT_OFFSETS
+from learm.kinematics import get_dh_parameters, get_link0_t_linki, DHParameters, LEARM_JOINT_OFFSETS, LEARN_JOINT_MIN_MAX
 from matplotlib.widgets import Slider
 
 def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
@@ -74,25 +74,18 @@ def add_sliders(fig,
     fig.subplots_adjust(left=0.25, bottom=0.25)
 
     joint_slider_list = []
-    joint_slider_min_max_init = [
-        [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0,q_0],
-        [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0,q_1],
-        [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,q_2],
-        [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,q_3],
-        [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,q_4],
-        [LEARM_JOINT_OFFSETS[5],LEARM_JOINT_OFFSETS[5]+0.03175,q_5],
-    ]
     # joints
-    for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
+    q_list = [q_0,q_1,q_2,q_3,q_4,q_5]
+    for jointi, (jointi_min_max, q_val) in enumerate(zip(LEARN_JOINT_MIN_MAX,q_list)):
         # Make a horizontal slider to control joints
         axfreq = fig.add_axes([0.25, 0 + (0.05*jointi), 0.65, 0.03])
         joint_slider_list.append(
         Slider(
             ax=axfreq,
             label=f'joint {jointi}',
-            valmin=jointi_min_max_init[0],
-            valmax=jointi_min_max_init[1],
-            valinit=jointi_min_max_init[2],
+            valmin=jointi_min_max[0],
+            valmax=jointi_min_max[1],
+            valinit=q_val,
         ))
 
     return joint_slider_list
