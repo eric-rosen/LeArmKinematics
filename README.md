@@ -80,4 +80,4 @@ visualize_learm(starting_configuration = FORWARD_GRAB_CONFIGURATION)
 ```
 
 # Support
-If you have any questions, feel free to reach out to [Eric Rosen](eric-rosen.github.io). This library is intended to be open-source and free for all to use for any purposes without permission needed.
+If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io). This library is intended to be open-source and free for all to use for any purposes without permission needed.
