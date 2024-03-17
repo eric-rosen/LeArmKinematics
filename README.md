@@ -3,6 +3,7 @@ Python library for calculating / visualizing forward kinematics on the LeArm 6-D
 
 You can find an amazon link to the arm [here](https://www.amazon.com/LewanSoul-Programmable-Feedback-Parameter-Programming/dp/B074T6DPKX)
 and you can find python code for controlling joint positions [here](https://github.com/ccourson/xArmServoController)
+
 <img src="./imgs/learm.jpeg" alt="LeArm Notes" style="width: 300px;">
 <img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
 
@@ -21,7 +22,7 @@ HOME_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
                                     0,          # joint/servo 3 (radians)
                                     np.pi/2.0,  # joint/servo 4 (radians)
                                     0,          # joint/servo 5 (radians)
-                                    0.09]       # joint/server 6 (meters)
+                                    0.09]       # joint/servo 6 (meters)
 ```
 This joint configuration represents the home configuration, which is when the robot is standing straight up with its gripper fully open. A funner position where the robot is bending over to grab something on the table might look like:
 
@@ -32,7 +33,7 @@ FORWARD_GRAB_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians
                                             0,          # joint/servo 3 (radians)
                                             np.pi/2.0,  # joint/servo 4 (radians)
                                             0,          # joint/servo 5 (radians)
-                                            0.09]       # joint/server 6 (meters)
+                                            0.09]       # joint/servo 6 (meters)
 ```
 
 Given a 6D joint configuration (like `HOME_CONFIGURATION`), forward kinematics calculates where each link is posed (position/orientation) in 3D space. 
