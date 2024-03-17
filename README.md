@@ -5,7 +5,6 @@ You can find an amazon link to the arm [here](https://www.amazon.com/LewanSoul-P
 and you can find python code for controlling joint positions [here](https://github.com/ccourson/xArmServoController)
 
 <img src="./imgs/learm.jpeg" alt="LeArm Notes" style="width: 300px;">
-<img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
 
 # Getting Started
 First, clone this git repo:
@@ -87,10 +86,13 @@ InteractiveVisualizer()
 InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
 ```
 
+You should see something like this:
+
+<img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
+
 # Contributors
 If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io).
 
 # TODO
-- make the prints for interactive visualizer be the current joint config
 - make a new gif for the visualization
 - move the limits / defaults out of viz and into kinematics as constants
