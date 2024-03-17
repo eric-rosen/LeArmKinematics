@@ -18,7 +18,7 @@ Then, go into the directory, and the setup via pip (I suggest using a virtual en
 
 ```bash
 cd /PATH/TO/LeArmKinematics
-pip install .
+pip install -e .
 ```
 
 Then, you're done! You should now be able to import `learm` in python:
