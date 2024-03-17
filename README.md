@@ -45,12 +45,12 @@ HOME_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
 This joint configuration represents the home configuration, which is when the robot is standing straight up with its gripper fully open. A funner position where the robot is bending over to grab something on the table might look like:
 
 ```python
-FORWARD_GRAB_CONFIGURATION : list[float] = [np.pi,      # joint/servo 1 (radians)
-                                            np.pi/2.0 + np.pi/8.0,  # joint/servo 2 (radians)
-                                            0 + np.pi/3.0,          # joint/servo 3 (radians)
-                                            np.pi/2.0 + np.pi/3.0,  # joint/servo 4 (radians)
-                                            0,          # joint/servo 5 (radians)
-                                            0.09 + 0.01]       # joint/servo 6 (meters)
+GRAB_CONFIGURATION : list[float] = [np.pi,                  # joint/servo 1 (radians)
+                                    np.pi/2.0 + np.pi/8.0,  # joint/servo 2 (radians)
+                                    0 + np.pi/3.0,          # joint/servo 3 (radians)
+                                    np.pi/2.0 + np.pi/3.0,  # joint/servo 4 (radians)
+                                    0,                      # joint/servo 5 (radians)
+                                    0.09 + 0.01]            # joint/servo 6 (meters)
 ```
 
 Given a 6D joint configuration (like `HOME_CONFIGURATION`), forward kinematics calculates where each link is posed (position/orientation) in 3D space. 
@@ -83,7 +83,7 @@ from learm.visualization import InteractiveVisualizer
 # launch interactive visualizer, by default it's in the HOME_CONFIGURATION
 InteractiveVisualizer()
 # you can also launch it with a specific starting joint configuration, for example:
-InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
+InteractiveVisualizer(*GRAB_CONFIGURATION)
 ```
 
 You should see something like this:
