@@ -12,7 +12,7 @@ First, clone this git repo:
 ```
 git clone https://github.com/eric-rosen/LeArmKinematics.git
 ```
-Then, go into the directory, and the setup via pip:
+Then, go into the directory, and the setup via pip (I suggest using a virtual environment like [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html)):
 ```
 cd /PATH/TO/LeArmKinematics
 pip install .
