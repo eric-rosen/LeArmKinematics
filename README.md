@@ -88,10 +88,7 @@ InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
 
 You should see something like this:
 
-<img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
+<img src="./imgs/newest_learm.gif" alt="LeArm Visualization" style="width: 300px;">
 
 # Contributors
 If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io).
-
-# TODO
-- make a new gif for the visualization
