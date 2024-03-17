@@ -92,4 +92,4 @@ If you have any questions, feel free to reach out to [Eric Rosen](https://eric-r
 
 # TODO
 - put actual configuration for `FORWARD_GRAB_CONFIGURATION`
-- actually get correct measurements for the LeArm
+- make the prints for interactive visualizer be the current joint config
