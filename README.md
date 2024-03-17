@@ -8,12 +8,13 @@ and you can find python code for controlling joint positions [here](https://gith
 <img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
 
 # Getting Started
-First, clone this library:
+First, clone this git repo:
 ```
 git clone https://github.com/eric-rosen/LeArmKinematics.git
 ```
-Then, you can setup package via pip:s
+Then, go into the directory, and the setup via pip:
 ```
+cd /PATH/TO/LeArmKinematics
 pip install .
 ```
 Then, you're done! You should now be able to import `learm` in python:
@@ -66,14 +67,17 @@ link0_t_link2 = link0_t_linki_list[2] # link_2's pose in world frame based on gi
 link0_t_link6 = link0_t_linki_list[5] # link_6's pose in world frame based on given joint value
 ```
 
-If we want, we can launch an interactive visualizer to see what the robot looks like in the configuration, and adjust
+If we want, we can launch an interactive visualizer to see what the robot looks like in a given configuration configuration, and adjust
 sliders to see what it would look like in other ones:
 
 ```
 from learm.visulization import visualize_learm
 
-# launch interactive visualizer
+# launch interactive visualizer, by default it's in the HOME_CONFIGURATION
 visualize_learm()
 # you can also launch it with a specific starting joint configuration, for example:
-visualize_learm(starting_configuration = HOME_CONFIGURATION)
+visualize_learm(starting_configuration = FORWARD_GRAB_CONFIGURATION)
 ```
+
+# Support
+If you have any questions, feel free to reach out to [Eric Rosen](eric-rosen.github.io). This library is intended to be open-source and free for all to use for any purposes without permission needed.
