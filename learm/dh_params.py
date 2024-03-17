@@ -2,10 +2,7 @@
 I highly recommend checking out "A Note on Denavit-Hartenberg Notation in Robotics by Harvey Lipkin (2005)
 This codebase was based on how the proximal variant was described in it. I am highly greatful for it as a resource.
 """
-from dataclasses import dataclass
-import numpy as np
 import numpy.typing as npt
-import math
 import matplotlib.pyplot as plt
 
 from learm.kinematics import get_dh_parameters, get_link0_t_linki, DHParameters, LEARM_JOINT_OFFSETS
