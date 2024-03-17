@@ -93,4 +93,4 @@ If you have any questions, feel free to reach out to [Eric Rosen](https://eric-r
 # TODO
 - put actual configuration for `FORWARD_GRAB_CONFIGURATION`
 - make the prints for interactive visualizer be the current joint config
-- add liscence (MIT?)
+- make a new gif for the visualization
