@@ -8,6 +8,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 import math
+from typing import Union
 
 # These are the values for the actuated joints that equate to the home configuration for the LeArm
 # These are meant to be constants and should not be touched
@@ -50,7 +51,7 @@ def get_a_t_b(dh_parameter : DHParameters) -> npt.NDArray:
     mat_b[2,1] = math.sin(dh_parameter.theta)
     return(np.matmul(mat_a,mat_b))
 
-def get_link0_t_linki(dh_parameters : list[DHParameters]) -> list[npt.NDArray]:
+def get_link0_t_linki(dh_parameters : Union[list[DHParameters],list[float]]) -> list[npt.NDArray]:
     """
     Given a list of DH parameters that start from 0 and go incrementally upward,
     return all link0_t_linki.
@@ -62,6 +63,12 @@ def get_link0_t_linki(dh_parameters : list[DHParameters]) -> list[npt.NDArray]:
 
     Note that link0_t_link0 is always the 4x4 identity matrix (np.eye(4))
     """
+    if len(dh_parameters) == 0:
+        raise RuntimeError(f"dh_parameters can not be empty, was length {len(dh_parameters)}")
+    else:
+        if isinstance(dh_parameters[0], float):
+            dh_parameters = get_dh_parameters(*dh_parameters)
+
     linki_t_linkj_list = [get_a_t_b(dh_parameter) for dh_parameter in  dh_parameters] # j = i+1
     world_t_linki_list = [np.eye(4)]
 

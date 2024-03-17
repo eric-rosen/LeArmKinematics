@@ -72,7 +72,7 @@ If we want, we can launch an interactive visualizer to see what the robot looks 
 sliders to see what it would look like in other ones:
 
 ```
-from learm.visulization import InteractiveVisualizer
+from learm.visualization import InteractiveVisualizer
 
 # launch interactive visualizer, by default it's in the HOME_CONFIGURATION
 InteractiveVisualizer()
