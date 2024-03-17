@@ -93,3 +93,4 @@ If you have any questions, feel free to reach out to [Eric Rosen](https://eric-r
 # TODO
 - make the prints for interactive visualizer be the current joint config
 - make a new gif for the visualization
+- move the limits / defaults out of viz and into kinematics as constants

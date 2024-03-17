@@ -80,7 +80,7 @@ def add_sliders(fig,
         [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,q_2],
         [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,q_3],
         [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,q_4],
-        [LEARM_JOINT_OFFSETS[5]-np.pi/2.0,LEARM_JOINT_OFFSETS[5]+np.pi/2.0,q_5],
+        [LEARM_JOINT_OFFSETS[5],LEARM_JOINT_OFFSETS[5]+0.03175,q_5],
     ]
     # joints
     for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
