@@ -6,7 +6,7 @@ setup(
     description='Python packages for 6Dof LeArm',
     packages=['learm'],
     install_requires=[
-        'numpy',
-        'matplotlib'
+        'numpy>=1.26.2',
+        'matplotlib>=3.8.2'
     ],
 )

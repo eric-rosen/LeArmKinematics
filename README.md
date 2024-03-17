@@ -21,7 +21,7 @@ Then, you're done! You should now be able to import `learm` in python:
 ```
 import learm
 ```
-
+Have fun :) 
 # Python examples
 The LeArm is a 6DoF robot arm, which means there are 6 joints that we can control (and therefore specify values for). 
 
