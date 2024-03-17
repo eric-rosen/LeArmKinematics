@@ -8,7 +8,18 @@ and you can find python code for controlling joint positions [here](https://gith
 <img src="./imgs/out.gif" alt="LeArm Visualization" style="width: 300px;">
 
 # Getting Started
-[TODO]
+First, clone this library:
+```
+git clone https://github.com/eric-rosen/LeArmKinematics.git
+```
+Then, you can setup package via pip:s
+```
+pip install .
+```
+Then, you're done! You should now be able to import `learm` in python:
+```
+import learm
+```
 
 # Python examples
 The LeArm is a 6DoF robot arm, which means there are 6 joints that we can control (and therefore specify values for). 
