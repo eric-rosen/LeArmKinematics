@@ -94,6 +94,7 @@ def add_sliders(fig, ax):
 class InteractiveVisualizer():
 
     def __init__(self):
+        # starts in home configuration
         self.learm_dh_parameters : list[DHParameters] = get_dh_parameters()
         world_t_linki_list : npt.NDArray = get_link0_t_linki(self.learm_dh_parameters)
 

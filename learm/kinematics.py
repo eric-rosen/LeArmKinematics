@@ -10,6 +10,7 @@ import numpy.typing as npt
 import math
 
 # These are the values for the actuated joints that equate to the home configuration for the LeArm
+# These are meant to be constants and should not be touched
 LEARM_JOINT_OFFSETS : list[float] = [np.pi,np.pi/2.0, 0,np.pi/2.0,0,0.09]
 
 @dataclass
@@ -71,19 +72,19 @@ def get_link0_t_linki(dh_parameters : list[DHParameters]) -> list[npt.NDArray]:
     return(world_t_linki_list)
 
 # TODO: redo actual measurements
-def get_dh_parameters(q_offset_1 : float = 0 ,
-                      q_offset_2 : float = 0 ,
-                      q_offset_3 : float = 0 ,
-                      q_offset_4 : float = 0 ,
-                      q_offset_5 : float = 0 ,
-                      q_offset_6 : float = 0 ,
+def get_dh_parameters(q_0 : float = LEARM_JOINT_OFFSETS[0],
+                      q_1  : float = LEARM_JOINT_OFFSETS[1] ,
+                      q_2  : float = LEARM_JOINT_OFFSETS[2] ,
+                      q_3  : float = LEARM_JOINT_OFFSETS[3] ,
+                      q_4  : float = LEARM_JOINT_OFFSETS[4] ,
+                      q_5  : float = LEARM_JOINT_OFFSETS[5] ,
                       ):
     """
-    Returns 
+    Returns dh parameters, with each q
     """
     dh_01 = DHParameters(
         d = 0.06985,
-        theta = LEARM_JOINT_OFFSETS[0] - q_offset_1, # TODO: user input
+        theta = q_0, # TODO: user input
         r = 0,
         alpha = 0,
     )
@@ -91,7 +92,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_12 = DHParameters(
         d = 0,
-        theta = LEARM_JOINT_OFFSETS[1] + q_offset_2, #0 TODO: user input
+        theta = q_1, #0 TODO: user input
         r = 0.01111,
         alpha = np.pi/2.0,
     )
@@ -99,7 +100,7 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_23 = DHParameters(
         d = 0,
-        theta = LEARM_JOINT_OFFSETS[2] + q_offset_3, # TODO: user input
+        theta = q_2, # TODO: user input
         r = 0.08,
         alpha = 0
     )
@@ -107,19 +108,19 @@ def get_dh_parameters(q_offset_1 : float = 0 ,
 
     dh_34 = DHParameters(
         d = 0,
-        theta = LEARM_JOINT_OFFSETS[3] + q_offset_4, # TODO: user input
+        theta = q_3, # TODO: user input
         r = 0.08,
         alpha = 0
     )
     dh_45 = DHParameters(
         d = 0,
-        theta = LEARM_JOINT_OFFSETS[4] + q_offset_5, # TODO: user input
+        theta = q_4, # TODO: user input
         r = 0,
         alpha = np.pi/2.0
     )
 
     dh_56 = DHParameters(
-        d = LEARM_JOINT_OFFSETS[5] + q_offset_6,# TODO: user input
+        d = q_5,# TODO: user input
         theta = 0, 
         r = 0,
         alpha = 0
