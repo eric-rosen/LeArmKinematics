@@ -87,9 +87,10 @@ InteractiveVisualizer()
 InteractiveVisualizer(*FORWARD_GRAB_CONFIGURATION)
 ```
 
-# Support
-If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io). This library is intended to be open-source and free for all to use for any purposes without permission needed.
+# Contributors
+If you have any questions, feel free to reach out to [Eric Rosen](https://eric-rosen.github.io).
 
 # TODO
 - put actual configuration for `FORWARD_GRAB_CONFIGURATION`
 - make the prints for interactive visualizer be the current joint config
+- add liscence (MIT?)
