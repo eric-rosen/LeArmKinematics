@@ -7,87 +7,9 @@ import numpy as np
 import numpy.typing as npt
 import math
 import matplotlib.pyplot as plt
-from typing import List
-from matplotlib.widgets import Slider
+
 from learm.kinematics import get_dh_parameters, get_link0_t_linki, DHParameters, LEARM_JOINT_OFFSETS
-
-def draw_frame_axes(world_t_frame : npt.NDArray, ax) -> None:
-    world_p_origin = world_t_frame[1:,0]
-    world_r_origin = world_t_frame[1:,1:] / 30.0
-    # plot axes
-    ax1 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,0], world_r_origin[1,0], world_r_origin[2,0], color="red")
-    ax2 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,1], world_r_origin[1,1], world_r_origin[2,1],  color="green")
-    ax3 = ax.quiver(world_p_origin[0], world_p_origin[1], world_p_origin[2], world_r_origin[0,2], world_r_origin[1,2], world_r_origin[2,2],  color="blue")
-    return([ax1,ax2,ax3])
-
-def draw_link_axes(world_t_frame1 : npt.NDArray, world_t_frame2 : npt.NDArray, ax) -> None:
-    world_p_frame1 = world_t_frame1[1:,0]
-    world_p_frame2 = world_t_frame2[1:,0]
-    # quiver wants frame2 in frame1
-    frame1_p_frame2 = world_p_frame2 - world_p_frame1
-    # plot link
-    link_quiver = ax.quiver(world_p_frame1[0], world_p_frame1[1], world_p_frame1[2], frame1_p_frame2[0], frame1_p_frame2[1], frame1_p_frame2[2], color="black")
-    return(link_quiver)
-
-def init_matplotlib_fig():
-    """
-    3d figure initialization for LeArm
-    """
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
-
-    ax.set_xlim((-0.15,.15))
-    ax.set_ylim((-0.15,.15))
-    ax.set_zlim((-0.05,.25))
-    return (fig,ax)
-
-def draw_dh_parameters(world_t_linki_list : list[npt.NDArray],ax) -> None:
-    """
-    We assume the list of dh_parameters describe a serial kinematic chain
-    """
-    # Draw the frames
-    viz_axes_list = []
-    for link0_t_linkj in world_t_linki_list:
-        viz_axes_list += draw_frame_axes(link0_t_linkj, ax)
-    
-    # Draw the links
-    viz_link_list = []
-    for linkj in range(len(world_t_linki_list)-1):
-        # draw two most recent links
-        viz_link_list.append(draw_link_axes(world_t_linki_list[linkj], world_t_linki_list[linkj+1], ax))
-
-    return(viz_axes_list,viz_link_list)
-
-def add_sliders(fix, ax):
-    # adjust the main plot to make room for the sliders
-    fig.subplots_adjust(left=0.25, bottom=0.25)
-
-    joint_slider_list = []
-    joint_slider_min_max_init = [
-        [LEARM_JOINT_OFFSETS[0]-np.pi/2.0,LEARM_JOINT_OFFSETS[0]+np.pi/2.0,LEARM_JOINT_OFFSETS[0]],
-        [LEARM_JOINT_OFFSETS[1]-np.pi/2.0,LEARM_JOINT_OFFSETS[1]+np.pi/2.0,LEARM_JOINT_OFFSETS[1]],
-        [LEARM_JOINT_OFFSETS[2]-np.pi/2.0,LEARM_JOINT_OFFSETS[2]+np.pi/2.0,LEARM_JOINT_OFFSETS[2]],
-        [LEARM_JOINT_OFFSETS[3]-np.pi/2.0,LEARM_JOINT_OFFSETS[3]+np.pi/2.0,LEARM_JOINT_OFFSETS[3]],
-        [LEARM_JOINT_OFFSETS[4]-np.pi/2.0,LEARM_JOINT_OFFSETS[4]+np.pi/2.0,LEARM_JOINT_OFFSETS[4]],
-        [LEARM_JOINT_OFFSETS[5]-np.pi/2.0,LEARM_JOINT_OFFSETS[5]+np.pi/2.0,LEARM_JOINT_OFFSETS[5]],
-    ]
-    # joints
-    for jointi, jointi_min_max_init in enumerate(joint_slider_min_max_init):
-        # Make a horizontal slider to control joints
-        axfreq = fig.add_axes([0.25, 0 + (0.05*jointi), 0.65, 0.03])
-        joint_slider_list.append(
-        Slider(
-            ax=axfreq,
-            label=f'joint {jointi}',
-            valmin=jointi_min_max_init[0],
-            valmax=jointi_min_max_init[1],
-            valinit=jointi_min_max_init[2],
-        ))
-
-    return joint_slider_list
+from learm.visualization import init_matplotlib_fig, draw_dh_parameters, add_sliders
 
 # Define a closure to capture the correct index for each slider
 def create_update_function(idx):
